@@ -21,7 +21,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
 
     private ContadorService contadorService;
     private Handler activityHandler;
-    private Button startBtn, pauseBtn, stopBtn;
+    private Button startPauseBtn, stopBtn;
     private Intent serviceIntent;
     CalculoHoraExtra calculador;
 
@@ -41,23 +41,19 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     }
 
     private void inicializaBotoes() {
-        startBtn = (Button) findViewById(R.id.startBtn);
-        pauseBtn = (Button) findViewById(R.id.pauseBtn);
+        startPauseBtn = (Button) findViewById(R.id.startBtn);
         stopBtn = (Button) findViewById(R.id.stopBtn);
 
-        startBtn.setOnClickListener(new View.OnClickListener() {
+        startPauseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                contadorService.iniciar();
-                ligarBotoes();
-            }
-        });
-
-        pauseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                contadorService.pausar();
-                desligarBotoes();
+                if (contadorService.isRunning()) {
+                    contadorService.pausar();
+                    desligarBotoes();
+                } else {
+                    contadorService.iniciar();
+                    ligarBotoes();
+                }
             }
         });
 
@@ -101,15 +97,16 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     }
 
     private void ligarBotoes() {
-        pauseBtn.setEnabled(true);
         stopBtn.setEnabled(true);
-        startBtn.setEnabled(false);
+        startPauseBtn.setText("Pausar");
     }
 
     private void desligarBotoes() {
-        pauseBtn.setEnabled(false);
         stopBtn.setEnabled(false);
-        startBtn.setEnabled(true);
+        if (contadorService != null && contadorService.getCount() > 0)
+            startPauseBtn.setText("Continuar");
+        else
+            startPauseBtn.setText("Iniciar");
     }
 
     @Override

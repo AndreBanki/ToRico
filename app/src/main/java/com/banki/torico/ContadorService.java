@@ -71,6 +71,10 @@ public class ContadorService extends Service implements Runnable {
         pausar();
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
     public int getCount() {
         return count;
     }
