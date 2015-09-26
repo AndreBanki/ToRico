@@ -57,12 +57,19 @@ public class ContadorService extends Service implements Runnable {
         super.onDestroy();
     }
 
-    public void iniciar() {
+    public void switchState() {
+        if (running)
+            pausar();
+        else
+            iniciar();
+    }
+
+    private void iniciar() {
         running = true;
         run();
     }
 
-    public void pausar() {
+    private void pausar() {
         running = false;
     }
 

@@ -32,7 +32,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
 
         inicializaBotoes();
         inicializaHandler();
-        desligarBotoes();
+        atualizaBotoes();
 
         calculador = new CalculoHoraExtra();
 
@@ -47,13 +47,8 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         startPauseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (contadorService.isRunning()) {
-                    contadorService.pausar();
-                    desligarBotoes();
-                } else {
-                    contadorService.iniciar();
-                    ligarBotoes();
-                }
+                contadorService.switchState();
+                atualizaBotoes();
             }
         });
 
@@ -62,7 +57,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
             public void onClick(View v) {
                 contadorService.reset();
                 atualizaResultadoContagem(0);
-                desligarBotoes();
+                atualizaBotoes();
                 stopService(serviceIntent);
             }
         });
@@ -75,7 +70,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
                 Bundle envelope = msg.getData();
                 int totalSegundos = envelope.getInt("count");
                 atualizaResultadoContagem(totalSegundos);
-                ligarBotoes();
+                atualizaBotoes();
             }
         };
     }
@@ -91,17 +86,23 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         valorHorasTxt.setText(calculador.valorHorasExtrasAsString(totalSegundos));
     }
 
-    private void ligarBotoes() {
-        stopBtn.setEnabled(true);
-        startPauseBtn.setText("Pausar");
-    }
-
-    private void desligarBotoes() {
-        stopBtn.setEnabled(false);
-        if (contadorService != null && contadorService.getCount() > 0)
-            startPauseBtn.setText("Continuar");
-        else
+    private void atualizaBotoes() {
+        if (contadorService == null) {
             startPauseBtn.setText("Iniciar");
+            stopBtn.setEnabled(false);
+        }
+        else if (contadorService.isRunning()) {
+            stopBtn.setEnabled(true);
+            startPauseBtn.setText("Pausar");
+        }
+        else if (contadorService.getCount() == 0) {
+            stopBtn.setEnabled(false);
+            startPauseBtn.setText("Iniciar");
+        }
+        else {
+            stopBtn.setEnabled(false);
+            startPauseBtn.setText("Continuar");
+        }
     }
 
     @Override
@@ -116,7 +117,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     protected void onPause() {
         super.onPause();
         unbindService(ContadorActivity.this);
-        desligarBotoes();
+        atualizaBotoes();
     }
 
     @Override
