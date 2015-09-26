@@ -25,23 +25,18 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contador);
 
-        startBtn = (Button) findViewById(R.id.startBtn);
-        stopBtn = (Button) findViewById(R.id.stopBtn);
-        resetBtn = (Button) findViewById(R.id.resetBtn);
+        inicializaBotoes();
+        inicializaHandler();
         desligarBotoes();
 
         serviceIntent = new Intent(ContadorActivity.this, ContadorService.class);
         startService(serviceIntent);
+    }
 
-        activityHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                TextView textView = (TextView) findViewById(R.id.texto);
-                Bundle envelope = msg.getData();
-                textView.setText(String.valueOf(envelope.getInt("count")));
-                ligarBotoes();
-            }
-        };
+    private void inicializaBotoes() {
+        startBtn = (Button) findViewById(R.id.startBtn);
+        stopBtn = (Button) findViewById(R.id.stopBtn);
+        resetBtn = (Button) findViewById(R.id.resetBtn);
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +62,18 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
                 desligarBotoes();
             }
         });
+    }
+
+    private void inicializaHandler() {
+        activityHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                TextView textView = (TextView) findViewById(R.id.texto);
+                Bundle envelope = msg.getData();
+                textView.setText(String.valueOf(envelope.getInt("count")));
+                ligarBotoes();
+            }
+        };
     }
 
     private void ligarBotoes() {

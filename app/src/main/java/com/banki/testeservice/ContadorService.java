@@ -38,20 +38,23 @@ public class ContadorService extends Service implements Runnable {
         if (running) {
             handler.postAtTime(this, SystemClock.uptimeMillis() + 1000);
             count++;
+            atualizaActivity();
+        }
+    }
 
-            if (activityHandler != null) {
-                Bundle envelope = new Bundle();
-                envelope.putInt("count", count);
-                Message msg = new Message();
-                msg.setData(envelope);
-                activityHandler.sendMessage(msg);
-            }
+    private void atualizaActivity() {
+        if (activityHandler != null) {
+            Bundle envelope = new Bundle();
+            envelope.putInt("count", count);
+            Message msg = new Message();
+            msg.setData(envelope);
+            activityHandler.sendMessage(msg);
         }
     }
 
     @Override
     public void onDestroy() {
-        running = false;
+        handler.removeCallbacks(this);
         super.onDestroy();
     }
 
@@ -61,7 +64,10 @@ public class ContadorService extends Service implements Runnable {
 
     public void setRunning(boolean running) {
         this.running = running;
-        run();
+        if (running)
+            run();
+        else
+            handler.removeCallbacks(this);
     }
 
     public boolean isRunning() {
