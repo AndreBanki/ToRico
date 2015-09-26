@@ -73,27 +73,22 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
             @Override
             public void handleMessage(Message msg) {
                 Bundle envelope = msg.getData();
-                int segundos = envelope.getInt("count");
-                atualizaResultadoContagem(segundos);
+                int totalSegundos = envelope.getInt("count");
+                atualizaResultadoContagem(totalSegundos);
                 ligarBotoes();
             }
         };
     }
 
     private void atualizaResultadoContagem(int totalSegundos) {
-        int minutos = totalSegundos / 60;
-        int horas = minutos / 60;
-        int segundos = totalSegundos - minutos * 60;
-
         TextView horasMinutosTxt = (TextView) findViewById(R.id.horasMinutos);
-        horasMinutosTxt.setText(String.format("%02d:%02d",horas,minutos));
+        horasMinutosTxt.setText(calculador.horasMinutosAsString(totalSegundos));
 
         TextView segundosTxt = (TextView) findViewById(R.id.segundos);
-        segundosTxt.setText(String.format(":%02d",segundos));
+        segundosTxt.setText(calculador.segundosAsString(totalSegundos));
 
         TextView valorHorasTxt = (TextView) findViewById(R.id.valorHoras);
-        float valorHoras = calculador.getValorSegundo() * totalSegundos;
-        valorHorasTxt.setText(String.format("R$ %.2f",valorHoras));
+        valorHorasTxt.setText(calculador.valorHorasExtrasAsString(totalSegundos));
     }
 
     private void ligarBotoes() {

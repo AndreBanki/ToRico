@@ -25,4 +25,21 @@ public class CalculoHoraExtra {
     public float getValorSegundo() {
         return valorSegundo;
     }
+
+    public String horasMinutosAsString(int totalSegundos) {
+        int minutos = totalSegundos / 60;
+        int horas = minutos / 60;
+        return String.format("%02d:%02d",horas,minutos);
+    }
+
+    public String segundosAsString(int totalSegundos) {
+        int minutos = totalSegundos / 60;
+        int segundos = totalSegundos - minutos * 60;
+        return String.format(":%02d",segundos);
+    }
+
+    public String valorHorasExtrasAsString(int totalSegundos) {
+        float valorHoras = valorSegundo * totalSegundos;
+        return String.format("R$ %.2f",valorHoras);
+    }
 }
