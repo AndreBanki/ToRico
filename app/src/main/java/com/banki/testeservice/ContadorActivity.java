@@ -8,19 +8,15 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ContadorActivity extends AppCompatActivity implements ServiceConnection {
 
     private ContadorService contadorService;
     private Button startBtn, stopBtn, resetBtn;
     private TextView textView;
-    private boolean running;
     private Handler repeatUpdateHandler = new Handler();
 
     @Override
@@ -38,8 +34,8 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                contadorService.setAtivo(true);
-                repeatUpdateHandler.post(new RepetitiveUpdater(textView, ContadorActivity.this));
+                contadorService.setRunning(true);
+                repeatUpdateHandler.post(new RepetitiveUpdater(textView, contadorService));
                 ligarBotoes();
             }
         });
@@ -47,7 +43,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                contadorService.setAtivo(false);
+                contadorService.setRunning(false);
                 desligarBotoes();
             }
         });
@@ -62,14 +58,12 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     }
 
     private void ligarBotoes() {
-        running = true;
         stopBtn.setEnabled(true);
         resetBtn.setEnabled(true);
         startBtn.setEnabled(false);
     }
 
     private void desligarBotoes() {
-        running = false;
         stopBtn.setEnabled(false);
         resetBtn.setEnabled(false);
         startBtn.setEnabled(true);
@@ -77,10 +71,6 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
 
     public ContadorService getContadorService() {
         return contadorService;
-    }
-
-    public boolean isRunning() {
-        return running;
     }
 
     @Override

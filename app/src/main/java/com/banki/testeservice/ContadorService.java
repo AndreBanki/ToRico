@@ -4,16 +4,13 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.os.Message;
 import android.os.SystemClock;
-
-import java.util.logging.Handler;
 
 public class ContadorService extends Service implements Runnable {
 
     private android.os.Handler handler = new ContadorHandler();
     private final IBinder connection = new ContadorBinder();
-    private boolean ativo;
+    private boolean running;
     private int count;
 
     public ContadorService() {
@@ -22,7 +19,7 @@ public class ContadorService extends Service implements Runnable {
     @Override
     public void onCreate() {
         super.onCreate();
-        ativo = false;
+        running = false;
         handler.post(this);
     }
 
@@ -33,7 +30,7 @@ public class ContadorService extends Service implements Runnable {
 
     @Override
     public void run() {
-        if (ativo) {
+        if (running) {
             handler.postAtTime(this, SystemClock.uptimeMillis() + 1000);
             count++;
             return;
@@ -43,7 +40,7 @@ public class ContadorService extends Service implements Runnable {
 
     @Override
     public void onDestroy() {
-        ativo = false;
+        running = false;
         super.onDestroy();
     }
 
@@ -51,14 +48,18 @@ public class ContadorService extends Service implements Runnable {
         return count;
     }
 
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
+    public void setRunning(boolean running) {
+        this.running = running;
         run();
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 
     public void reset() {
         count = 0;
-        ativo = false;
+        running = false;
     }
 
     private class ContadorHandler extends android.os.Handler {
