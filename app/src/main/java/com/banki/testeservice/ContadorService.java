@@ -56,6 +56,11 @@ public class ContadorService extends Service implements Runnable {
         run();
     }
 
+    public void reset() {
+        count = 0;
+        ativo = false;
+    }
+
     private class ContadorHandler extends android.os.Handler {
     }
 

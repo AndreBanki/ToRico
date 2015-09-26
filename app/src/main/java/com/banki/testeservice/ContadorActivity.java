@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class ContadorActivity extends AppCompatActivity implements ServiceConnection {
 
     private ContadorService contadorService;
-    private Button startBtn, stopBtn, viewBtn;
+    private Button startBtn, stopBtn, resetBtn;
     private TextView textView;
     private boolean running;
     private Handler repeatUpdateHandler = new Handler();
@@ -30,7 +30,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
 
         startBtn = (Button) findViewById(R.id.startBtn);
         stopBtn = (Button) findViewById(R.id.stopBtn);
-        viewBtn = (Button) findViewById(R.id.viewBtn);
+        resetBtn = (Button) findViewById(R.id.resetBtn);
         desligarBotoes();
 
         textView = (TextView) findViewById(R.id.texto);
@@ -52,11 +52,11 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
             }
         });
 
-        viewBtn.setOnClickListener(new View.OnClickListener() {
+        resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int count = contadorService.getCount();
-                Toast.makeText(ContadorActivity.this, "C: " + count, Toast.LENGTH_SHORT).show();
+                contadorService.reset();
+                desligarBotoes();
             }
         });
     }
@@ -64,14 +64,14 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     private void ligarBotoes() {
         running = true;
         stopBtn.setEnabled(true);
-        viewBtn.setEnabled(true);
+        resetBtn.setEnabled(true);
         startBtn.setEnabled(false);
     }
 
     private void desligarBotoes() {
         running = false;
         stopBtn.setEnabled(false);
-        viewBtn.setEnabled(false);
+        resetBtn.setEnabled(false);
         startBtn.setEnabled(true);
     }
 
