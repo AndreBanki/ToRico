@@ -16,15 +16,15 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Parar"
-        android:id="@+id/stopBtn"
+        android:text="Pausar"
+        android:id="@+id/pauseBtn"
         android:layout_marginTop="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reset"
-        android:id="@+id/resetBtn"
+        android:text="Parar"
+        android:id="@+id/stopBtn"
         android:layout_marginTop="10dp" />
 
     <TextView

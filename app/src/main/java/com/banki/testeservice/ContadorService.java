@@ -58,25 +58,18 @@ public class ContadorService extends Service implements Runnable {
         super.onDestroy();
     }
 
-    public int getCount() {
-        return count;
+    public void iniciar() {
+        running = true;
+        run();
     }
 
-    public void setRunning(boolean running) {
-        this.running = running;
-        if (running)
-            run();
-        else
-            handler.removeCallbacks(this);
-    }
-
-    public boolean isRunning() {
-        return running;
+    public void pausar() {
+        running = false;
     }
 
     public void reset() {
         count = 0;
-        running = false;
+        pausar();
     }
 
     public void setActivityHandler(Handler activityHandler) {

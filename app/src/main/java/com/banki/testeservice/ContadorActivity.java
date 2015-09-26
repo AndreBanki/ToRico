@@ -17,7 +17,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
 
     private ContadorService contadorService;
     private Handler activityHandler;
-    private Button startBtn, stopBtn, resetBtn;
+    private Button startBtn, pauseBtn, stopBtn;
     private Intent serviceIntent;
 
     @Override
@@ -35,31 +35,35 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
 
     private void inicializaBotoes() {
         startBtn = (Button) findViewById(R.id.startBtn);
+        pauseBtn = (Button) findViewById(R.id.pauseBtn);
         stopBtn = (Button) findViewById(R.id.stopBtn);
-        resetBtn = (Button) findViewById(R.id.resetBtn);
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                contadorService.setRunning(true);
+                contadorService.iniciar();
                 ligarBotoes();
+            }
+        });
+
+        pauseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contadorService.pausar();
+                desligarBotoes();
             }
         });
 
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                contadorService.setRunning(false);
-                desligarBotoes();
-                stopService(serviceIntent);
-            }
-        });
-
-        resetBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 contadorService.reset();
+
+                TextView textView = (TextView) findViewById(R.id.texto);
+                textView.setText("0");
                 desligarBotoes();
+
+                stopService(serviceIntent);
             }
         });
     }
@@ -77,14 +81,14 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     }
 
     private void ligarBotoes() {
+        pauseBtn.setEnabled(true);
         stopBtn.setEnabled(true);
-        resetBtn.setEnabled(true);
         startBtn.setEnabled(false);
     }
 
     private void desligarBotoes() {
+        pauseBtn.setEnabled(false);
         stopBtn.setEnabled(false);
-        resetBtn.setEnabled(false);
         startBtn.setEnabled(true);
     }
 
