@@ -3,8 +3,12 @@ package com.banki.testeservice;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.SystemClock;
+import android.util.Log;
 
 public class ContadorService extends Service implements Runnable {
 
@@ -12,6 +16,7 @@ public class ContadorService extends Service implements Runnable {
     private final IBinder connection = new ContadorBinder();
     private boolean running;
     private int count;
+    private Handler activityHandler;
 
     public ContadorService() {
     }
@@ -33,9 +38,15 @@ public class ContadorService extends Service implements Runnable {
         if (running) {
             handler.postAtTime(this, SystemClock.uptimeMillis() + 1000);
             count++;
-            return;
+
+            if (activityHandler != null) {
+                Bundle envelope = new Bundle();
+                envelope.putInt("count", count);
+                Message msg = new Message();
+                msg.setData(envelope);
+                activityHandler.sendMessage(msg);
+            }
         }
-        stopSelf();
     }
 
     @Override
@@ -60,6 +71,10 @@ public class ContadorService extends Service implements Runnable {
     public void reset() {
         count = 0;
         running = false;
+    }
+
+    public void setActivityHandler(Handler activityHandler) {
+        this.activityHandler = activityHandler;
     }
 
     private class ContadorHandler extends android.os.Handler {

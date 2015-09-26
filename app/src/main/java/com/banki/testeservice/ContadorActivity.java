@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,9 +16,9 @@ import android.widget.TextView;
 public class ContadorActivity extends AppCompatActivity implements ServiceConnection {
 
     private ContadorService contadorService;
+    private Handler activityHandler;
     private Button startBtn, stopBtn, resetBtn;
-    private TextView textView;
-    private Handler repeatUpdateHandler = new Handler();
+    private Intent serviceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +30,23 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         resetBtn = (Button) findViewById(R.id.resetBtn);
         desligarBotoes();
 
-        textView = (TextView) findViewById(R.id.texto);
+        serviceIntent = new Intent(ContadorActivity.this, ContadorService.class);
+        startService(serviceIntent);
+
+        activityHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                TextView textView = (TextView) findViewById(R.id.texto);
+                Bundle envelope = msg.getData();
+                textView.setText(String.valueOf(envelope.getInt("count")));
+                ligarBotoes();
+            }
+        };
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 contadorService.setRunning(true);
-                repeatUpdateHandler.post(new RepetitiveUpdater(textView, contadorService));
                 ligarBotoes();
             }
         });
@@ -45,6 +56,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
             public void onClick(View v) {
                 contadorService.setRunning(false);
                 desligarBotoes();
+                stopService(serviceIntent);
             }
         });
 
@@ -69,15 +81,10 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         startBtn.setEnabled(true);
     }
 
-    public ContadorService getContadorService() {
-        return contadorService;
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        Intent intent = new Intent(ContadorActivity.this, ContadorService.class);
-        bindService(intent, ContadorActivity.this, Context.BIND_AUTO_CREATE);
+        bindService(serviceIntent, ContadorActivity.this, Context.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -91,10 +98,12 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     public void onServiceConnected(ComponentName name, IBinder service) {
         ContadorService.ContadorBinder binder = (ContadorService.ContadorBinder) service;
         contadorService = binder.getContador();
+        contadorService.setActivityHandler(activityHandler);
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
+        contadorService.setActivityHandler(null);
         contadorService = null;
     }
 }
