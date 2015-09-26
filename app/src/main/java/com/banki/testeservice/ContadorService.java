@@ -72,6 +72,10 @@ public class ContadorService extends Service implements Runnable {
         pausar();
     }
 
+    public int getCount() {
+        return count;
+    }
+
     public void setActivityHandler(Handler activityHandler) {
         this.activityHandler = activityHandler;
     }

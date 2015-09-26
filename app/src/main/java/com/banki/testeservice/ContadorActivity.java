@@ -18,6 +18,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     private ContadorService contadorService;
     private Handler activityHandler;
     private Button startBtn, pauseBtn, stopBtn;
+    private TextView textView;
     private Intent serviceIntent;
 
     @Override
@@ -28,6 +29,8 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         inicializaBotoes();
         inicializaHandler();
         desligarBotoes();
+
+        textView = (TextView) findViewById(R.id.texto);
 
         serviceIntent = new Intent(ContadorActivity.this, ContadorService.class);
         startService(serviceIntent);
@@ -58,11 +61,8 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
             @Override
             public void onClick(View v) {
                 contadorService.reset();
-
-                TextView textView = (TextView) findViewById(R.id.texto);
                 textView.setText("0");
                 desligarBotoes();
-
                 stopService(serviceIntent);
             }
         });
@@ -72,7 +72,6 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         activityHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                TextView textView = (TextView) findViewById(R.id.texto);
                 Bundle envelope = msg.getData();
                 textView.setText(String.valueOf(envelope.getInt("count")));
                 ligarBotoes();
@@ -110,6 +109,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         ContadorService.ContadorBinder binder = (ContadorService.ContadorBinder) service;
         contadorService = binder.getContador();
         contadorService.setActivityHandler(activityHandler);
+        textView.setText(String.valueOf(contadorService.getCount()));
     }
 
     @Override
