@@ -22,7 +22,7 @@ public class ContadorService extends Service implements Runnable {
     @Override
     public void onCreate() {
         super.onCreate();
-        ativo = true;
+        ativo = false;
         handler.post(this);
     }
 
@@ -49,6 +49,11 @@ public class ContadorService extends Service implements Runnable {
 
     public int getCount() {
         return count;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+        run();
     }
 
     private class ContadorHandler extends android.os.Handler {
