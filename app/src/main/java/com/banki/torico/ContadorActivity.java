@@ -9,6 +9,8 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -116,5 +118,24 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     public void onServiceDisconnected(ComponentName name) {
         contadorService.setActivityHandler(null);
         contadorService = null;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_contador, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            Intent config = new Intent(ContadorActivity.this, SettingsActivity.class);
+            startActivity(config);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
