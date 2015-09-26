@@ -84,6 +84,13 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        unbindService(ContadorActivity.this);
+        desligarBotoes();
+    }
+
+    @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         ContadorService.ContadorBinder binder = (ContadorService.ContadorBinder) service;
         contadorService = binder.getContador();
