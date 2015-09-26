@@ -4,9 +4,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,8 +22,8 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     private ContadorService contadorService;
     private Handler activityHandler;
     private Button startBtn, pauseBtn, stopBtn;
-    private TextView textView;
     private Intent serviceIntent;
+    CalculoHoraExtra calculador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         inicializaHandler();
         desligarBotoes();
 
-        textView = (TextView) findViewById(R.id.texto);
+        calculador = new CalculoHoraExtra();
 
         serviceIntent = new Intent(ContadorActivity.this, ContadorService.class);
         startService(serviceIntent);
@@ -63,7 +65,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
             @Override
             public void onClick(View v) {
                 contadorService.reset();
-                textView.setText("0");
+                atualizaResultadoContagem(0);
                 desligarBotoes();
                 stopService(serviceIntent);
             }
@@ -75,10 +77,21 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
             @Override
             public void handleMessage(Message msg) {
                 Bundle envelope = msg.getData();
-                textView.setText(String.valueOf(envelope.getInt("count")));
+                int segundos = envelope.getInt("count");
+                atualizaResultadoContagem(segundos);
                 ligarBotoes();
             }
         };
+    }
+
+    private void atualizaResultadoContagem(int segundos) {
+        TextView textView = (TextView) findViewById(R.id.texto);
+
+        float valorHoras = calculador.getValorSegundo() * segundos;
+        String mensagem = String.valueOf(segundos) + " segundos (R$" +
+                          String.valueOf(valorHoras) + ")";
+
+        textView.setText(mensagem);
     }
 
     private void ligarBotoes() {
@@ -96,6 +109,8 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     @Override
     protected void onResume() {
         super.onResume();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        calculador.carregaPrefs(settings);
         bindService(serviceIntent, ContadorActivity.this, Context.BIND_AUTO_CREATE);
     }
 
@@ -111,7 +126,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         ContadorService.ContadorBinder binder = (ContadorService.ContadorBinder) service;
         contadorService = binder.getContador();
         contadorService.setActivityHandler(activityHandler);
-        textView.setText(String.valueOf(contadorService.getCount()));
+        atualizaResultadoContagem(contadorService.getCount());
     }
 
     @Override
