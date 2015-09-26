@@ -84,14 +84,20 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         };
     }
 
-    private void atualizaResultadoContagem(int segundos) {
-        TextView textView = (TextView) findViewById(R.id.texto);
+    private void atualizaResultadoContagem(int totalSegundos) {
+        int minutos = totalSegundos / 60;
+        int horas = minutos / 60;
+        int segundos = totalSegundos - minutos * 60;
 
-        float valorHoras = calculador.getValorSegundo() * segundos;
-        String mensagem = String.valueOf(segundos) + " segundos (R$" +
-                          String.valueOf(valorHoras) + ")";
+        TextView horasMinutosTxt = (TextView) findViewById(R.id.horasMinutos);
+        horasMinutosTxt.setText(String.format("%02d:%02d",horas,minutos));
 
-        textView.setText(mensagem);
+        TextView segundosTxt = (TextView) findViewById(R.id.segundos);
+        segundosTxt.setText(String.format(":%02d",segundos));
+
+        TextView valorHorasTxt = (TextView) findViewById(R.id.valorHoras);
+        float valorHoras = calculador.getValorSegundo() * totalSegundos;
+        valorHorasTxt.setText(String.format("R$ %.2f",valorHoras));
     }
 
     private void ligarBotoes() {
