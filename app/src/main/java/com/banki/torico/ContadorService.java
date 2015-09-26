@@ -1,4 +1,4 @@
-package com.banki.testeservice;
+package com.banki.torico;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.SystemClock;
-import android.util.Log;
 
 public class ContadorService extends Service implements Runnable {
 

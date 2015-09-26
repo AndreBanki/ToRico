@@ -1,4 +1,4 @@
-package com.banki.testeservice;
+package com.banki.torico;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
