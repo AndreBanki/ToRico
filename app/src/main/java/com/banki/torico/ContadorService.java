@@ -62,7 +62,7 @@ public class ContadorService extends Service implements Runnable {
         return seraDestruido;
     }
 
-    public void switchState() {
+    public void toggleState() {
         if (running)
             pausar();
         else
@@ -90,6 +90,10 @@ public class ContadorService extends Service implements Runnable {
 
     public int getCount() {
         return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public void setActivityHandler(Handler activityHandler) {

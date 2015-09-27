@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,6 +25,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     private Handler activityHandler;
     private Button startPauseBtn, stopBtn;
     private Intent serviceIntent;
+    private Snackbar snackbar = null;
     CalculoHoraExtra calculador;
 
     @Override
@@ -50,8 +53,11 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
                 // foi clicado no stop, vai destruir ao sair da activity se não for iniciado de novo
                 if (contadorService.isSeraDestruido())
                     startService(serviceIntent);
+                // foi clicado no stop e a snackbar está visível ainda, remover
+                if (snackbar != null)
+                    snackbar.dismiss();
 
-                contadorService.switchState();
+                contadorService.toggleState();
                 atualizaBotoes();
             }
         });
@@ -59,12 +65,35 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                criaSnackBarOpcaoDesfazerStop();
+
                 contadorService.reset();
+                stopService(serviceIntent);
+
                 atualizaResultadoContagem(0);
                 atualizaBotoes();
-                stopService(serviceIntent);
             }
         });
+    }
+
+    private void criaSnackBarOpcaoDesfazerStop() {
+        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.mainLayout);
+        final int countToKeep = contadorService.getCount();
+        snackbar = Snackbar
+                .make(coordinatorLayout, "Contador zerado!", Snackbar.LENGTH_INDEFINITE)
+                .setAction("DESFAZER", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        contadorService.setCount(countToKeep);
+                        startService(serviceIntent);
+                        atualizaResultadoContagem(countToKeep);
+                        atualizaBotoes();
+
+                        Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Contador restaurado!", Snackbar.LENGTH_SHORT);
+                        snackbar1.show();
+                    }
+                });
+        snackbar.show();
     }
 
     private void inicializaHandler() {
