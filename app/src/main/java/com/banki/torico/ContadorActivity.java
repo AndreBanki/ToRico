@@ -47,6 +47,10 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         startPauseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // foi clicado no stop, vai destruir ao sair da activity se não for iniciado de novo
+                if (contadorService.isSeraDestruido())
+                    startService(serviceIntent);
+
                 contadorService.switchState();
                 atualizaBotoes();
             }

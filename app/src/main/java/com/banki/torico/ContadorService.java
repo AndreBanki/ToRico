@@ -14,6 +14,7 @@ public class ContadorService extends Service implements Runnable {
     private android.os.Handler handler = new ContadorHandler();
     private final IBinder connection = new ContadorBinder();
     private boolean running;
+    private boolean seraDestruido = false;
     private int count;
     private Handler activityHandler;
 
@@ -57,6 +58,10 @@ public class ContadorService extends Service implements Runnable {
         super.onDestroy();
     }
 
+    public boolean isSeraDestruido() {
+        return seraDestruido;
+    }
+
     public void switchState() {
         if (running)
             pausar();
@@ -75,6 +80,7 @@ public class ContadorService extends Service implements Runnable {
 
     public void reset() {
         count = 0;
+        seraDestruido = true;
         pausar();
     }
 
