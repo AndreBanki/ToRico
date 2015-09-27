@@ -1,15 +1,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".ContadorActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:orientation="vertical"
+        android:background="#314cff">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,36 +32,64 @@
             android:layout_height="wrap_content"
             android:text=":00"
             android:id="@+id/segundos"
-            android:textSize="20dp"
-            android:layout_toRightOf="@+id/horasMinutos"
-            android:layout_alignBaseline="@+id/horasMinutos" />
-    </RelativeLayout>
+            android:textSize="25dp"
+            android:layout_toRightOf="@id/horasMinutos"
+            android:layout_alignBaseline="@id/horasMinutos" />
+        </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="R$ 145.85"
-        android:id="@+id/valorHoras"
-        android:textSize="30dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tempo trabalhado"
+            android:textSize="15dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="1dp" />
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Iniciar"
         android:id="@+id/startBtn"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:drawableTint="@drawable/abc_list_selector_holo_dark" />
 
+
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#ff5706"
+        android:layout_margin="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valor a receber:"
+            android:textSize="15dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="1dp"
+            android:layout_marginLeft="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R$ 145.85"
+            android:id="@+id/valorHoras"
+            android:textSize="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+
+    </LinearLayout>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Parar"
+        android:text="Encerrar a contagem"
         android:id="@+id/stopBtn"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="bottom"
+        android:background="@color/background_material_dark" />
 
 </LinearLayout>

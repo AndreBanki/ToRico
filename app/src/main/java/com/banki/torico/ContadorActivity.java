@@ -88,20 +88,20 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
 
     private void atualizaBotoes() {
         if (contadorService == null) {
-            startPauseBtn.setText("Iniciar");
+            startPauseBtn.setText("Começar a trabalhar");
             stopBtn.setEnabled(false);
         }
         else if (contadorService.isRunning()) {
             stopBtn.setEnabled(true);
-            startPauseBtn.setText("Pausar");
+            startPauseBtn.setText("Pausa para um intervalo");
         }
         else if (contadorService.getCount() == 0) {
             stopBtn.setEnabled(false);
-            startPauseBtn.setText("Iniciar");
+            startPauseBtn.setText("Começar a trabalhar");
         }
         else {
-            stopBtn.setEnabled(false);
-            startPauseBtn.setText("Continuar");
+            stopBtn.setEnabled(true);
+            startPauseBtn.setText("Retomar o trabalho");
         }
     }
 
