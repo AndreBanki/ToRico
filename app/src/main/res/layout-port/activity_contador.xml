@@ -62,16 +62,6 @@
             android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Iniciar"
-        android:id="@+id/startBtn"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"
-        android:drawableTint="@drawable/abc_list_selector_holo_dark" />
-
-
      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -110,4 +100,13 @@
         android:background="@color/windowBackground" />
 
 </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:id="@+id/startBtn"
+        android:src="@drawable/ic_play" />
+
 </android.support.design.widget.CoordinatorLayout>

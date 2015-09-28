@@ -5,12 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -24,7 +27,8 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
 
     private ContadorService contadorService;
     private Handler activityHandler;
-    private Button startPauseBtn, stopBtn;
+    private Button stopBtn;
+    private FloatingActionButton startPauseBtn;
     private Intent serviceIntent;
     private Snackbar snackbar = null;
     CalculoHoraExtra calculador;
@@ -50,7 +54,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     }
 
     private void inicializaBotoes() {
-        startPauseBtn = (Button) findViewById(R.id.startBtn);
+        startPauseBtn = (FloatingActionButton) findViewById(R.id.startBtn);
         stopBtn = (Button) findViewById(R.id.stopBtn);
 
         startPauseBtn.setOnClickListener(new View.OnClickListener() {
@@ -94,9 +98,6 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
                         startService(serviceIntent);
                         atualizaResultadoContagem(countToKeep);
                         atualizaBotoes();
-
-                        Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Contador restaurado!", Snackbar.LENGTH_SHORT);
-                        snackbar1.show();
                     }
                 });
         snackbar.show();
@@ -126,21 +127,23 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     }
 
     private void atualizaBotoes() {
+        Drawable playImg = ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_play);
+        Drawable pauseImg = ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_pause);
         if (contadorService == null) {
-            startPauseBtn.setText("Começar a trabalhar");
             stopBtn.setEnabled(false);
+            startPauseBtn.setImageDrawable(playImg);
         }
         else if (contadorService.isRunning()) {
             stopBtn.setEnabled(true);
-            startPauseBtn.setText("Pausa para um intervalo");
+            startPauseBtn.setImageDrawable(pauseImg);
         }
         else if (contadorService.getCount() == 0) {
             stopBtn.setEnabled(false);
-            startPauseBtn.setText("Começar a trabalhar");
+            startPauseBtn.setImageDrawable(playImg);
         }
         else {
             stopBtn.setEnabled(true);
-            startPauseBtn.setText("Retomar o trabalho");
+            startPauseBtn.setImageDrawable(playImg);
         }
     }
 
