@@ -27,7 +27,6 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
 
     private ContadorService contadorService;
     private Handler activityHandler;
-    private Button stopBtn;
     private FloatingActionButton startPauseBtn;
     private Intent serviceIntent;
     private Snackbar snackbar = null;
@@ -55,7 +54,6 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
 
     private void inicializaBotoes() {
         startPauseBtn = (FloatingActionButton) findViewById(R.id.startBtn);
-        stopBtn = (Button) findViewById(R.id.stopBtn);
 
         startPauseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,19 +66,6 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
                     snackbar.dismiss();
 
                 contadorService.toggleState();
-                atualizaBotoes();
-            }
-        });
-
-        stopBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                criaSnackBarOpcaoDesfazerStop();
-
-                contadorService.reset();
-                stopService(serviceIntent);
-
-                atualizaResultadoContagem(0);
                 atualizaBotoes();
             }
         });
@@ -130,19 +115,19 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         Drawable playImg = ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_play);
         Drawable pauseImg = ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_pause);
         if (contadorService == null) {
-            stopBtn.setEnabled(false);
+            //stopBtn.setEnabled(false);
             startPauseBtn.setImageDrawable(playImg);
         }
         else if (contadorService.isRunning()) {
-            stopBtn.setEnabled(true);
+            //stopBtn.setEnabled(true);
             startPauseBtn.setImageDrawable(pauseImg);
         }
         else if (contadorService.getCount() == 0) {
-            stopBtn.setEnabled(false);
+            //stopBtn.setEnabled(false);
             startPauseBtn.setImageDrawable(playImg);
         }
         else {
-            stopBtn.setEnabled(true);
+            //stopBtn.setEnabled(true);
             startPauseBtn.setImageDrawable(playImg);
         }
     }
@@ -191,7 +176,17 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
             startActivity(config);
             return true;
         }
+        else if (id == R.id.btnStop) {
+            if (contadorService.getCount() > 0) {
+                criaSnackBarOpcaoDesfazerStop();
 
+                contadorService.reset();
+                stopService(serviceIntent);
+
+                atualizaResultadoContagem(0);
+                atualizaBotoes();
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 }

@@ -16,93 +16,82 @@
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="50dp"
+        android:paddingTop="60dp"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00:00"
-            android:id="@+id/horasMinutos"
-            android:textSize="50dp"
-            android:textIsSelectable="true"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/colorPrimaryDark" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":00"
-            android:id="@+id/segundos"
-            android:textSize="20dp"
-            android:layout_toRightOf="@id/horasMinutos"
-            android:layout_alignBaseline="@id/horasMinutos"
-            android:textColor="@color/colorPrimaryDark" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:id="@+id/horasMinutos"
+                    android:textSize="60dp"
+                    android:textIsSelectable="true"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/colorPrimaryDark" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":00"
+                    android:id="@+id/segundos"
+                    android:textSize="25dp"
+                    android:layout_toRightOf="@id/horasMinutos"
+                    android:layout_alignBaseline="@id/horasMinutos"
+                    android:textColor="@color/colorPrimaryDark" />
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tempo trabalhado"
                 android:textSize="15dp"
-                android:layout_gravity="right"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="1dp"
+                android:layout_gravity="center_horizontal"
                 android:textColor="@color/colorPrimaryDark" />
-        </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginTop="25dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valor a receber:"
+                android:textSize="15dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp"
+                android:textColor="@color/textColorPrimary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="R$ 145.85"
+                android:id="@+id/valorHoras"
+                android:textSize="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/textColorPrimary" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/colorPrimaryDark"
-         android:layout_marginLeft="50dp"
-         android:layout_marginRight="50dp"
-         android:layout_marginTop="5dp"
-         android:layout_marginBottom="5dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Valor a receber:"
-            android:textSize="15dp"
-            android:layout_gravity="left"
-            android:layout_marginTop="1dp"
-            android:layout_marginLeft="1dp"
-            android:textColor="@color/textColorPrimary" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="R$ 145.85"
-            android:id="@+id/valorHoras"
-            android:textSize="25dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/textColorPrimary" />
-
-    </LinearLayout>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Encerrar a contagem"
-        android:id="@+id/stopBtn"
-        android:layout_gravity="bottom"
-        android:background="@color/windowBackground" />
-
-</LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
