@@ -20,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class ContadorActivity extends AppCompatActivity implements ServiceConnection {
@@ -58,15 +57,14 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         startPauseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // foi clicado no stop, vai destruir ao sair da activity se não for iniciado de novo
-                if (contadorService.isSeraDestruido())
-                    startService(serviceIntent);
-                // foi clicado no stop e a snackbar está visível ainda, remover
-                if (snackbar != null)
-                    snackbar.dismiss();
-
-                contadorService.toggleState();
-                atualizaBotoes();
+                iniciarPausarContagem();
+            }
+        });
+        startPauseBtn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                pararContagem();
+                return true;
             }
         });
     }
@@ -132,6 +130,30 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
         }
     }
 
+    private void iniciarPausarContagem() {
+        // foi clicado no stop, vai destruir ao sair da activity se não for iniciado de novo
+        if (contadorService.isSeraDestruido())
+            startService(serviceIntent);
+        // foi clicado no stop e a snackbar está visível ainda, remover
+        if (snackbar != null)
+            snackbar.dismiss();
+
+        contadorService.toggleState();
+        atualizaBotoes();
+    }
+
+    private void pararContagem() {
+        if (contadorService.getCount() > 0) {
+            criaSnackBarOpcaoDesfazerStop();
+
+            contadorService.reset();
+            stopService(serviceIntent);
+
+            atualizaResultadoContagem(0);
+            atualizaBotoes();
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -177,15 +199,7 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
             return true;
         }
         else if (id == R.id.btnStop) {
-            if (contadorService.getCount() > 0) {
-                criaSnackBarOpcaoDesfazerStop();
-
-                contadorService.reset();
-                stopService(serviceIntent);
-
-                atualizaResultadoContagem(0);
-                atualizaBotoes();
-            }
+            pararContagem();
         }
         return super.onOptionsItemSelected(item);
     }
