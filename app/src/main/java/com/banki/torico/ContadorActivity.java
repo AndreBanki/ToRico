@@ -38,8 +38,6 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         inicializaBotoes();
         inicializaHandler();
