@@ -1,9 +1,12 @@
-package com.banki.torico;
+package com.banki.torico.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import com.banki.torico.ContadorActivity;
+import com.banki.torico.R;
 
 public class SettingsActivity extends AppCompatActivity {
 

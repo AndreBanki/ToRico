@@ -1,4 +1,4 @@
-package com.banki.torico;
+package com.banki.torico.settings;
 
 import android.content.Context;
 import android.preference.EditTextPreference;

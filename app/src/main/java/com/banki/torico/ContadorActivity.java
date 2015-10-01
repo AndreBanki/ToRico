@@ -22,6 +22,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.banki.torico.model.CalculoHoraExtra;
+import com.banki.torico.settings.SettingsActivity;
+
 public class ContadorActivity extends AppCompatActivity implements ServiceConnection {
 
     private ContadorService contadorService;
@@ -110,28 +113,19 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     private void atualizaBotoes() {
         Drawable playImg = ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_play);
         Drawable pauseImg = ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_pause);
-        if (contadorService == null) {
-            //stopBtn.setEnabled(false);
+        if (contadorService == null)
             startPauseBtn.setImageDrawable(playImg);
-        }
-        else if (contadorService.isRunning()) {
-            //stopBtn.setEnabled(true);
+        else if (contadorService.isRunning())
             startPauseBtn.setImageDrawable(pauseImg);
-        }
-        else if (contadorService.getCount() == 0) {
-            //stopBtn.setEnabled(false);
+        else
             startPauseBtn.setImageDrawable(playImg);
-        }
-        else {
-            //stopBtn.setEnabled(true);
-            startPauseBtn.setImageDrawable(playImg);
-        }
     }
 
     private void iniciarPausarContagem() {
         // foi clicado no stop, vai destruir ao sair da activity se não for iniciado de novo
-        if (contadorService.isSeraDestruido())
+        if (contadorService.isDoomed())
             startService(serviceIntent);
+
         // foi clicado no stop e a snackbar está visível ainda, remover
         if (snackbar != null)
             snackbar.dismiss();

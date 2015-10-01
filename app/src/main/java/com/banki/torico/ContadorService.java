@@ -11,10 +11,10 @@ import android.os.SystemClock;
 
 public class ContadorService extends Service implements Runnable {
 
-    private android.os.Handler handler = new ContadorHandler();
+    private Handler handler = new ContadorHandler();
     private final IBinder connection = new ContadorBinder();
     private boolean running;
-    private boolean seraDestruido = false;
+    private boolean doomed;
     private int count;
     private Handler activityHandler;
 
@@ -25,6 +25,7 @@ public class ContadorService extends Service implements Runnable {
     public void onCreate() {
         super.onCreate();
         running = false;
+        doomed = false;
         handler.post(this);
     }
 
@@ -58,8 +59,8 @@ public class ContadorService extends Service implements Runnable {
         super.onDestroy();
     }
 
-    public boolean isSeraDestruido() {
-        return seraDestruido;
+    public boolean isDoomed() {
+        return doomed;
     }
 
     public void toggleState() {
@@ -80,7 +81,7 @@ public class ContadorService extends Service implements Runnable {
 
     public void reset() {
         count = 0;
-        seraDestruido = true;
+        doomed = true;
         pausar();
     }
 

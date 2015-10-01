@@ -1,4 +1,4 @@
-package com.banki.torico;
+package com.banki.torico.model;
 
 import android.content.SharedPreferences;
 

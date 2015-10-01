@@ -1,8 +1,11 @@
-package com.banki.torico;
+package com.banki.torico.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+
+import com.banki.torico.R;
+import com.banki.torico.settings.CustomEditPreference;
 
 public class SettingsFragment extends PreferenceFragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
 

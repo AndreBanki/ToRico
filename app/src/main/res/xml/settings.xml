@@ -1,6 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.banki.torico.CustomEditPreference
+    <com.banki.torico.settings.CustomEditPreference
         android:key="salario_bruto"
         android:id="@+id/salario_bruto"
         android:title="Salário bruto"
@@ -11,7 +11,7 @@
         android:singleLine="true"
         android:maxLines="1" />
 
-    <com.banki.torico.CustomEditPreference
+    <com.banki.torico.settings.CustomEditPreference
         android:key="horas_mensais"
         android:id="@+id/horas_mensais"
         android:title="Horas mensais"
@@ -22,7 +22,7 @@
         android:singleLine="true"
         android:maxLines="1" />
 
-    <com.banki.torico.CustomEditPreference
+    <com.banki.torico.settings.CustomEditPreference
         android:key="adicional_extra"
         android:id="@+id/adicional_extra"
         android:title="Adicional por hora extra"
