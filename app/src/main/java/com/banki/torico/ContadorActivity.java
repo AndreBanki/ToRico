@@ -122,9 +122,8 @@ public class ContadorActivity extends AppCompatActivity implements ServiceConnec
     }
 
     private void iniciarPausarContagem() {
-        // foi clicado no stop, vai destruir ao sair da activity se não for iniciado de novo
-        if (contadorService.isDoomed())
-            startService(serviceIntent);
+        // se foi clicado no stop, vai destruir ao sair da activity se não for iniciado de novo
+        startService(serviceIntent);
 
         // foi clicado no stop e a snackbar está visível ainda, remover
         if (snackbar != null)

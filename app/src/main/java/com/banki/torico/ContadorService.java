@@ -14,7 +14,6 @@ public class ContadorService extends Service implements Runnable {
     private Handler handler = new ContadorHandler();
     private final IBinder connection = new ContadorBinder();
     private boolean running;
-    private boolean doomed;
     private int count;
     private Handler activityHandler;
 
@@ -25,7 +24,6 @@ public class ContadorService extends Service implements Runnable {
     public void onCreate() {
         super.onCreate();
         running = false;
-        doomed = false;
         handler.post(this);
     }
 
@@ -59,10 +57,6 @@ public class ContadorService extends Service implements Runnable {
         super.onDestroy();
     }
 
-    public boolean isDoomed() {
-        return doomed;
-    }
-
     public void toggleState() {
         if (running)
             pausar();
@@ -81,7 +75,6 @@ public class ContadorService extends Service implements Runnable {
 
     public void reset() {
         count = 0;
-        doomed = true;
         pausar();
     }
 
